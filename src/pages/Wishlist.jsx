@@ -1,25 +1,26 @@
 import React from 'react'
-import { faHeart, faCartShopping } from '@fortawesome/free-solid-svg-icons'
+import { faTrash, faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-
+import { useDispatch, useSelector } from 'react-redux'
+import {removeWishlistItem} from '../Redux/slice/wishlistSlice'
 function Wishlist() {
   const wishlistArray = useSelector((state)=>state.WishlistReducer)
   console.log(wishlistArray);
-  
+  const dispatch = useDispatch()
   return (
     <>
-      <h1 className='text-purple-900 text-center mt-10 text-4xl'>Wishlist</h1> 
+      <h1 className='text-purple-900 text-center text-4xl' style={{paddingTop:"70px"}}>Wishlist</h1> 
       {/* items in wishlist */}
     {  wishlistArray?.length>0?<div className='md:grid grid-cols-4 md:p-10 p-5 mt-5 mb-5'>
       { wishlistArray.map((item, index)=>(
-         <div className=' shadow-2xl rounded px-6 py-4 '>
-          <img src="https://cdn.tirabeauty.com/v2/billowing-snowflake-434234/tira-p/wrkr/products/pictures/item/free/resize-w:1080/1140728/GlXRwuZtst-1140728_1.jpg" alt="no-image" style={{ height: '300px', width: "100%" }} />
-          <p className='text-justify'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reprehenderit voluptas odit quia delectus, commodi maxime impedit ratione voluptatibus vel quasi mollitia, consectetur autem ab fuga saepe natus dolorum, itaque nulla.</p>
-          <p >Price :<span className='text-blue-700'> $9.9</span></p>
+         <div key={index} className=' shadow-2xl rounded px-6 py-4 '>
+          <img src={item?.thumbnail} alt="no-image" style={{ height: '300px', width: "100%" }} />
+          <h4 className='text-center text-purple-800 font-bold'>{item?.title}</h4>
+          <p className='text-justify'>{item?.description}</p>
+          <p >Price :<span className='text-blue-700'>$ {item?.price}</span></p>
           <div className='flex justify-between mt-3'>
-            <button className='bg-red-600 hover:bg-white hover:border hover:border-red-600 rounded px-2 py-1 hover:text-red-600 text-white'><FontAwesomeIcon icon={faHeart} className=' ' /></button>
+            <button onClick={()=>dispatch(removeWishlistItem(item.id))} className='bg-red-600 hover:bg-white hover:border hover:border-red-600 rounded px-2 py-1 hover:text-red-600 text-white'><FontAwesomeIcon icon={faTrash} className=' ' /></button>
             <button className='bg-green-800 rounded px-2 py-1 hover:bg-white hover:border hover:border-green-800 hover:text-green-800 text-white'><FontAwesomeIcon icon={faCartShopping} /></button>
           </div>
         </div>
