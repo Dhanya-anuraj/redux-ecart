@@ -4,10 +4,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {removeWishlistItem} from '../Redux/slice/wishlistSlice'
+import { addToCart } from '../Redux/slice/cartSlice'
 function Wishlist() {
   const wishlistArray = useSelector((state)=>state.WishlistReducer)
   console.log(wishlistArray);
   const dispatch = useDispatch()
+
+  const handleCart = (item)=>{
+   dispatch(addToCart(item))
+   dispatch(removeWishlistItem(item.id))
+   
+  }
   return (
     <>
       <h1 className='text-purple-900 text-center text-4xl' style={{paddingTop:"70px"}}>Wishlist</h1> 
@@ -21,7 +28,7 @@ function Wishlist() {
           <p >Price :<span className='text-blue-700'>$ {item?.price}</span></p>
           <div className='flex justify-between mt-3'>
             <button onClick={()=>dispatch(removeWishlistItem(item.id))} className='bg-red-600 hover:bg-white hover:border hover:border-red-600 rounded px-2 py-1 hover:text-red-600 text-white'><FontAwesomeIcon icon={faTrash} className=' ' /></button>
-            <button className='bg-green-800 rounded px-2 py-1 hover:bg-white hover:border hover:border-green-800 hover:text-green-800 text-white'><FontAwesomeIcon icon={faCartShopping} /></button>
+            <button onClick={()=>handleCart(item)} className='bg-green-800 rounded px-2 py-1 hover:bg-white hover:border hover:border-green-800 hover:text-green-800 text-white'><FontAwesomeIcon icon={faCartShopping} /></button>
           </div>
         </div>
       ))}
